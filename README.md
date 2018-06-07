@@ -36,7 +36,8 @@ imposm3 import -config config.json -read nordrhein-westfalen-latest.osm.pbf -wri
   - Import all database tables (see step 4) using Importer. Important: Activate *application/x-protobuf;type=mapbox-vector* (image format) in the Tile-Cache configuration.
   - Create new style (Format: mystyle) and import the *bikestyle.json* file from /assets
   - Create a new group layer (no need for adding the single layers) and apply the bike style
- 6. src/mapconfig.js: Comment out line 59 and 60. Comment in line 61 to 62. That's it.
+ 6. **Mapproxy:** 
+ 7. src/mapconfig.js: Comment out line 59 and 60. Comment in line 61 to 62. That's it.
 
 
 

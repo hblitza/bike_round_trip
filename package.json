@@ -4,9 +4,10 @@
   "private": true,
   "dependencies": {
     "@terrestris/react-geo": "^8.2.0",
+    "antd": "^3.6.1",
     "jquery": "^3.3.1",
     "ol": "^4.6.5",
-    "openlayers-ext": "^2.0.3",
+    "ol-ext": "^2.0.4",
     "rangeslider-js": "^3.1.2",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",

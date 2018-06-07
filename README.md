@@ -6,6 +6,8 @@ This is a simple react-geo based round trip planner for biking tours.
 While waypoints can be set individually or calculated with help of turf.js, directions are based on the api of openrouteservice.
 **Optional** For using a custom mapstyle that focuses on biking needs, additional steps and tools are needed (see below).
 
+<img src="./screenshots/shroute.png" width="800px" />
+
 ## Install
 Clone repository to your local drive
 ```javascript static
@@ -44,7 +46,13 @@ imposm3 import -config config.json -read nordrhein-westfalen-latest.osm.pbf -wri
 
  5. **Mapproxy:** Config file: `/mapstyle/mapproxy.yaml`
 ```javascript static
- mapproxy-util serve-develop mapproxy.yaml -b 10.133.7.105:8081
+ mapproxy-util serve-develop mapproxy.yaml -b localhost:8081
  ```
 
  6. `src/mapconfig.js`: Comment out line 59 and 60. Comment in line 61 to 62. That's it.
+
+ ## FAQ
+1. **Why NRW?**
+ This project is among others a showcase for using newly published open geodata by the authorities in combination with existing open data and tools. Of course the app will work outside of NRW, too. But the shaded relief layer is limited to the state of NRW.
+2. **Can I use the app for plan round hikinh routes?**
+Yes, just toogle the button with the bike icon. This will set the directions profile to hiking.

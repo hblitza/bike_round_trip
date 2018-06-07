@@ -1,0 +1,4 @@
+{
+    "mapping": "mapping.json",
+    "connection": "postgis://postgres:jsmmrd1@localhost:5432/osm_bright"
+}

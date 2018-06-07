@@ -22,27 +22,29 @@ npm start
 ```javascript static
 http://download.geofabrik.de/europe/germany/nordrhein-westfalen-latest.osm.pbf
 ```
-2. Download the bounding box for the specific region
-https://overpass-turbo.eu/
 
-3. **PostgreSQL:** Create Database and activate PostGIS extension.
+2. **PostgreSQL:** Create Database and activate PostGIS extension.
 ```javascript static
 CREATE DATABASE bike_nrw;
 CREATE EXTENSION POSTGIS;
 ```
-4. Import the OSM dataset into the database using [Imposm](https://github.com/omniscale/imposm3)
+
+3. Import the OSM dataset into the database using [Imposm](https://github.com/omniscale/imposm3) See `/mapstyle` for config and mapping file
 ```javascript static
 imposm3 import -config config.json -read nordrhein-westfalen-latest.osm.pbf -write -limitto nrw.geojson
 ```
-5. **Geoserver:** Install the following extensions:
+
+4. **Geoserver:** Install the following extensions:
   - Importer
   - Vector tiles
   - [mbstyle](http://ares.opengeo.org/geoserver/master/community-latest/)
   - Import all database tables (see step 4) using Importer. Important: Activate *application/x-protobuf;type=mapbox-vector* (image format) in the Tile-Cache configuration.
-  - Create new style (Format: mystyle) and import the *bikestyle.json* file from /assets
+  - Create new style (Format: mystyle) and import the *bikestyle.json* file from `/mapstyle`
   - Create a new group layer (no need for adding the single layers) and apply the bike style
- 6. **Mapproxy:** Config file: /mapstyle/mapproxy.yaml
+
+ 5. **Mapproxy:** Config file: `/mapstyle/mapproxy.yaml`
 ```javascript static
  mapproxy-util serve-develop mapproxy.yaml -b 10.133.7.105:8081
  ```
- 7. src/mapconfig.js: Comment out line 59 and 60. Comment in line 61 to 62. That's it.
+
+ 6. `src/mapconfig.js`: Comment out line 59 and 60. Comment in line 61 to 62. That's it.

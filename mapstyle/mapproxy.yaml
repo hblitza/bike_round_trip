@@ -1,0 +1,82 @@
+# -------------------------------
+# MapProxy example configuration.
+# -------------------------------
+#
+# This is a minimal MapProxy configuration.
+# See full_example.yaml and the documentation for more options.
+#
+
+# Starts the following services:
+# Demo:
+#     http://localhost:8080/demo
+# WMS:
+#     capabilities: http://localhost:8080/service?REQUEST=GetCapabilities
+# WMTS:
+#     capabilities: http://localhost:8080/wmts/1.0.0/WMTSCapabilities.xml
+#     first tile: http://localhost:8080/wmts/osm/webmercator/0/0/0.png
+# Tile service (compatible with OSM/etc.)
+#     first tile: http://localhost:8080/tiles/osm/webmercator/0/0/0.png
+# TMS:
+#     note: TMS is not compatible with OSM/Google Maps/etc.
+#     fist tile: http://localhost:8080/tms/1.0.0/osm/webmercator/0/0/0.png
+# KML:
+#     initial doc: http://localhost:8080/kml/osm/webmercator
+
+services:
+  demo:
+  tms:
+    use_grid_names: true
+    # origin for /tiles service
+    origin: 'nw'
+  kml:
+      use_grid_names: true
+  wmts:
+  wms:
+    md:
+      title: osm_project
+      abstract: This is a minimal MapProxy example.
+
+layers:
+  - name: osm_styling
+    title: osm_styling
+    sources: [osm_cache]
+  - name: countries
+    title: countries
+    sources: [countries_cache]
+  - name: nw_dgm-schummerung_pan_ne
+    title: 	dgm-schummerung_pan_ne
+    sources: [dgm_cache]
+
+caches:
+  osm_cache:
+    grids: [webmercator]
+    sources: [osm_wms]
+  countries_cache:
+    grids: [webmercator]
+    sources: [countries]
+  dgm_cache:
+    grids: [webmercator]
+    sources: [dgm_wms]
+
+sources:
+  osm_wms:
+    type: wms
+    req:
+      url: http://localhost:8080/geoserver/wms
+      layers: osm_project:osm_nrw
+  countries:
+    type: wms
+    req:
+      url: http://localhost:8080/geoserver/wms
+      layers: opengeo:countries
+  dgm_wms:
+    type: wms
+    req:
+      url: http://localhost:8080/geoserver/wms
+      layers: opengeo:nw_dgm-schummerung_pan_ne
+
+grids:
+    webmercator:
+        base: GLOBAL_WEBMERCATOR
+
+globals:

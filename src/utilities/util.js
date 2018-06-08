@@ -87,53 +87,55 @@ export const dialogue = [
 
 export class Turf {
   static calcCircle (startcoordinate, bearing, distance) {
-    let radius = 0.7 * distance / (2 * Math.PI);
-    let ptStart = turf.point(startcoordinate);
-    let options = {units: 'kilometers'};
-    let optionsCircle = {steps: 8, units: 'kilometers'};
-    let ptCenter = turf.destination(ptStart, radius, bearing, options);
-    let circle = turf.circle(ptCenter, radius, optionsCircle);
+    const radius = 0.7 * distance / (2 * Math.PI);
+    const ptStart = turf.point(startcoordinate);
+    const options = {units: 'kilometers'};
+    const optionsCircle = {steps: 8, units: 'kilometers'};
+    const ptCenter = turf.destination(ptStart, radius, bearing, options);
+    const circle = turf.circle(ptCenter, radius, optionsCircle);
     const destination = [];
     //destination.push(ptStart);
     circle.geometry.coordinates[0].forEach(function(item) {
       destination.push(turf.point(item));
     });
-
-    //reordering the array -- to be improved
+    //reordering the array clockwise
+    //turf creates a circle counterclockwise
+    //depending on the bearing
     //move array element function
-    Array.prototype.move = function (from, to) {
-      this.splice(to, 0, this.splice(from, 1)[0]);
-    };
+
+
+    destination.splice(8);
 
     function repeat(func, times) {
         func();
         --times && repeat(func, times);
     }
 
-    if (bearing > 292.5 && bearing < 337.5) { //NW
-      const times = 5;
-      repeat(function () { destination.move(0,8) }, times);
+    function move(array) {
+      const cut = array.shift();
+      array.push(cut);
+    }
+    if (bearing > 112.5 && bearing < 157.5) { //SE
+      move(destination);
+    } else if (bearing > 67.5 && bearing < 112.5) { //E
+      repeat(function () { move(destination) }, 2);
+    } else if (bearing > 22.5 && bearing < 67.5) { //NE
+      repeat(function () { move(destination) }, 3);
+    } else if (bearing > 337.5 || bearing < 22.5) { //N
+      repeat(function () { move(destination) }, 4);
+    } else if (bearing > 292.5 && bearing < 337.5) { //NW
+      repeat(function () { move(destination) }, 5);
     } else if (bearing > 247.5 && bearing < 292.5) {  //W
-      const times = 6;
-      repeat(function () { destination.move(0,8) }, times);
+      repeat(function () { move(destination) }, 6);
     } else if (bearing > 202.5 && bearing < 247.5) { // SW
-      const times = 7;
-      repeat(function () { destination.move(0,8) }, times);
-    } else if (bearing > 112.5 && bearing < 157.5) { //S
-      const times = 1;
-      repeat(function () { destination.move(0,8) }, times);
-    } else if (bearing > 67.5 && bearing < 112.5) { //SE
-      const times = 2;
-      repeat(function () { destination.move(0,8) }, times);
-    } else if (bearing > 22.5 && bearing < 67.5) { //E
-      const times = 3;
-      repeat(function () { destination.move(0,8) }, times);
-    } else if (bearing > 292.5 || bearing < 22.5) { //NE
-      const times = 4;
-      repeat(function () { destination.move(0,8) }, times);
+      repeat(function () { move(destination) }, 7);
     }
     destination[0] = ptStart;
     destination[8] = ptStart;
+    console.log(bearing);
+    destination.forEach(function(item) {
+      console.log(item.geometry.coordinates)
+    });
     return destination
   }
 }

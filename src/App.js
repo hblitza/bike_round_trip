@@ -214,10 +214,8 @@ componentDidMount() {
     } else if (n_features.length === 3) {
       this.setMessage(4);
       NewRoute.calcRoute(directionssrc, directionsLayer, vectorsrc, this.state.Profile);
-    } else if (n_features.length > 3 && n_features.length <= 6) {
+    } else if (n_features.length > 3) {
       NewRoute.calcRoute(directionssrc, directionsLayer, vectorsrc, this.state.Profile);
-    } else if (n_features.length > 6) {
-      //
     }
   });
   const routesrc = map.getLayers().getArray()[3].getSource();
@@ -258,7 +256,14 @@ componentDidMount() {
         map={map}
         style={{height: window.innerHeight}}
       />
-{this.state.isHidden && <Infobox  RouteLength={this.state.RouteLength} message={this.state.message} gpx={this.state.gpx} DLisHidden={this.state.DLisHidden} DistanceisHidden={this.state.DistanceisHidden}/>}
+{this.state.isHidden &&
+  <Infobox
+    RouteLength={this.state.RouteLength}
+    message={this.state.message}
+    gpx={this.state.gpx}
+    DLisHidden={this.state.DLisHidden}
+    DistanceisHidden={this.state.DistanceisHidden}
+  />}
 <Panel
   style={{position: 'fixed'}}
   x={20}
@@ -290,8 +295,8 @@ componentDidMount() {
 </GeoLocationButton>
 <ToggleButton
   className="toolbar-btn"
-  icon="eye"
-  pressedIcon="eye-slash"
+  icon="eye-slash"
+  pressedIcon="eye"
   onToggle={() => this.toggleLayer(hillshade)}
 /><br />
 <SimpleButton
@@ -310,15 +315,17 @@ componentDidMount() {
 />
 <br />
 </Panel>
-{!this.state.ArrowisHidden && <Arrows
-                                  selectBearing={this.handleBearing.bind(this)}
-                                  ArrowisHidden={this.state.ArrowisHidden}
-                                  hideArrows={this.hideArrows.bind(this)}
-                                  />}
-{!this.state.DistanceisHidden && <Distance
-                                        selectDistance={this.handleDistance.bind(this)}
-                                        DistanceisHidden={this.state.DistanceisHidden}
-                                  />}
+{!this.state.ArrowisHidden &&
+    <Arrows
+        selectBearing={this.handleBearing.bind(this)}
+        ArrowisHidden={this.state.ArrowisHidden}
+        hideArrows={this.hideArrows.bind(this)}
+    />}
+{!this.state.DistanceisHidden &&
+    <Distance
+        selectDistance={this.handleDistance.bind(this)}
+        DistanceisHidden={this.state.DistanceisHidden}
+    />}
       </div>
     );
   }

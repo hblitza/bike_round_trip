@@ -182,7 +182,7 @@
         "visibility": "visible"
       },
       "paint": {
-        "fill-color": "rgba(247, 247, 247, 1)",
+        "fill-color": "#c2e699",
         "fill-outline-color": "rgba(204, 204, 204, 1)",
         "fill-antialias": true,
         "fill-translate-anchor": "map"
@@ -340,13 +340,19 @@
           "==",
           "type",
           "residential"
+        ],
+        [
+          ">=",
+          "area",
+          4000000
         ]
       ],
       "layout": {
         "visibility": "visible"
       },
       "paint": {
-        "fill-color": "#d9d9d9"
+        "fill-color": "#d9d9d9",
+        "fill-opacity": 1
       }
     },
     {
@@ -408,6 +414,11 @@
           "==",
           "name",
           "Sieg"
+        ],
+        [
+          "==",
+          "name",
+          "Ruhr"
         ]
       ],
       "paint": {
@@ -599,6 +610,11 @@
           "==",
           "type",
           "residential"
+        ],
+        [
+          ">=",
+          "area",
+          2000000
         ]
       ],
       "layout": {
@@ -667,6 +683,11 @@
           "==",
           "name",
           "Sieg"
+        ],
+        [
+          "==",
+          "name",
+          "Ruhr"
         ]
       ],
       "paint": {
@@ -1036,7 +1057,7 @@
       "type": "fill",
       "source": "osm_waterareas",
       "source-layer": "osm_waterareas",
-      "minzoom": 11,
+      "minzoom": 10,
       "maxzoom": 22,
       "filter": [
         "all",
@@ -1320,7 +1341,7 @@
       "type": "line",
       "source": "osm_roads",
       "source-layer": "osm_roads",
-      "minzoom": 14,
+      "minzoom": 15,
       "maxzoom": 24,
       "filter": [
         "any",
@@ -1674,7 +1695,7 @@
         "visibility": "visible"
       },
       "paint": {
-        "line-color": "rgba(234, 206, 6, 1)",
+        "line-color": "rgba(255, 174, 0, 1)",
         "line-width": {
           "stops": [
             [

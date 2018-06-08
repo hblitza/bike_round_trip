@@ -72,7 +72,7 @@ export const map = new OlMap({
 });
 
 map.addLayer(basemap);
-hillshade.setVisible(false);
+hillshade.setVisible(true);
 map.addLayer(hillshade);
 const setBlendModeFromSelect = function(evt) {
   evt.context.globalCompositeOperation = 'hard-light';

@@ -132,10 +132,6 @@ export class Turf {
     }
     destination[0] = ptStart;
     destination[8] = ptStart;
-    console.log(bearing);
-    destination.forEach(function(item) {
-      console.log(item.geometry.coordinates)
-    });
     return destination
   }
 }

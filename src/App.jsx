@@ -47,18 +47,17 @@ class App extends Component {
        DistanceisHidden: true,
        RouteLength: "",
        Profile: 'cycling-tour',
-       hiking: false
+       profileIcon: "bicycle",
+       hillshadeIcon: "eye-slash"
      }
   }
 
-  toggleProfile (profile) {
-    console.log('wip, state error')
-    /*
-    if (this.state.cycling = true) {
-      this.setState({hiking: true})
-    }
-      this.setState({Profile: 'foot-hiking'})
-    } else {this.setState({Profile: 'cycling-tour'})} */
+  toggleProfile () {
+    if (this.state.Profile === "cycling-tour") {
+      this.setState({Profile: "foot-hiking", profileIcon: "male"})
+    } else {
+      this.setState({Profile: "cycling-tour", profileIcon: "bicycle"})
+      }
   }
   toggleInfobox () {
     this.setState({
@@ -75,8 +74,10 @@ class App extends Component {
 toggleLayer (layer) {
   if (layer.getVisible() === false) {
     layer.setVisible(true);
+    this.setState({hillshadeIcon: "eye-slash"})
   } else {
     layer.setVisible(false);
+    this.setState({hillshadeIcon: "eye"})
   }
 }
 
@@ -276,11 +277,10 @@ componentDidMount() {
   icon="info"
   onClick={this.toggleInfobox.bind(this)}
 /><br />
-<ToggleButton
+<SimpleButton
   className="toolbar-btn"
-  icon="bicycle"
-  pressedIcon="male"
-  onToggle={() => this.toggleProfile('foot-hiking')}
+  icon={this.state.profileIcon}
+  onClick={() => this.toggleProfile()}
   tooltip="Choose type of locomotion"
   tooltipPlacement="right"
 /><br />
@@ -295,11 +295,10 @@ componentDidMount() {
 >
   <i class="fa fa-location-arrow"></i>
 </GeoLocationButton>
-<ToggleButton
+<SimpleButton
   className="toolbar-btn"
-  icon="eye-slash"
-  pressedIcon="eye"
-  onToggle={() => this.toggleLayer(hillshade)}
+  icon={this.state.hillshadeIcon}
+  onClick={() => this.toggleLayer(hillshade)}
 /><br />
 <SimpleButton
   className="toolbar-btn"

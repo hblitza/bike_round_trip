@@ -1,6 +1,6 @@
 # Bike round trip planner
 A bike round trip planner for NRW using the api of openrouteservice.   
-[Online version](https://hblitza,github.io/bike_round_trip)
+[Online version](https://hblitza.github.io/bike_round_trip)
 
 ## Info
 This is a simple [react-geo](https://github.com/terrestris/react-geo) based round trip planner for biking tours.

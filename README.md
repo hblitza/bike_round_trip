@@ -1,9 +1,10 @@
 # Bike round trip planner
-A bike round trip planner using the api of openrouteservice
+A bike round trip planner for NRW using the api of openrouteservice.   
+[Online version](https://hblitza,github.io/bike_round_trip)
 
 ## Info
-This is a simple react-geo based round trip planner for biking tours.
-While waypoints can be set individually or calculated with help of turf.js, directions are based on the api of openrouteservice.
+This is a simple [react-geo](https://github.com/terrestris/react-geo) based round trip planner for biking tours.
+While waypoints can be set individually or calculated with help of [turf.js](https://github.com/Turfjs/turf), the final directions are based on [openrouteservice](https://openrouteservice.org/).   
 **Optional** For using a custom mapstyle that focuses on biking needs, additional steps and tools are needed (see below).
 
 <div align="center"><img src="./screenshots/shroute.png" width="800px" /></div>
@@ -51,8 +52,11 @@ imposm3 import -config config.json -read nordrhein-westfalen-latest.osm.pbf -wri
 
  6. `src/mapconfig.js`: Comment out line 59 and 60. Comment in line 61 to 62. That's it.
 
- ## FAQ
-1. **Why NRW?**
+## FAQ
+1. **Why NRW?**   
  This project is among others a showcase for using newly published open geodata by the authorities in combination with existing open data and tools. Of course the app will work outside of NRW, too. But the shaded relief layer is limited to the state of NRW.
-2. **Can I use the app for plan round hiking routes?**
+2. **Can I use the app for planning hiking round trips?**   
 Yes, just toogle the button with the bike icon. This will set the directions profile to hiking.
+
+## Licence
+to do

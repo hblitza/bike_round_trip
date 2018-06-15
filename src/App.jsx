@@ -3,7 +3,8 @@ import {
   SimpleButton,
   GeoLocationButton,
   MapComponent,
-  NominatimSearch
+  NominatimSearch,
+  Panel
 } from '@terrestris/react-geo';
 //import styles
 import {
@@ -25,9 +26,6 @@ import OlInteractionSelect from 'ol/interaction/select';
 import OlFeature from 'ol/feature';
 import OlGeomPoint from 'ol/geom/point';
 import OlEventsCondition from 'ol/events/condition';
-//import ol-contextmenu
-import ContextMenu from 'ol-contextmenu';
-import 'ol-contextmenu/dist/ol-contextmenu.css';
 //import map_config
 import {
   map,
@@ -55,9 +53,11 @@ class App extends Component {
        Profile: 'cycling-tour',
        profileIcon: "bicycle",
        hillshadeIcon: "eye-slash",
-       contextmessage1: "Set as start",
        ftcount: 0,
-       nominatimDisplay: "none"
+       nominatimDisplay: "none",
+       contextmenuDisplay: "none",
+       contextmenuDeleteDisplay: "none",
+       contextmenuText: "Set start"
      }
   }
 
@@ -156,13 +156,24 @@ clearmap () {
   map.removeControl(this.Profile);
   this.directionsVectorSource.clear();
   this.circleSource.clear();
-  this.setState({ftcount: 0, message:dialogue[0],ImprintisHidden:true,DLisHidden:true,isHidden:true,ArrowisHidden:true,DistanceisHidden:true,RouteLength:""});
+  this.setState({contextmenuText: "Set start", contextmenuDisplay: "none", ftcount: 0, message:dialogue[0],ImprintisHidden:true,DLisHidden:true,isHidden:true,ArrowisHidden:true,DistanceisHidden:true,RouteLength:""});
   let geolocateoverlay = map.getOverlays().getArray()[0];
   map.removeOverlay(geolocateoverlay);
   this.WaypointsSource.clear();
-  this.contextmenu.close();
-
 }
+
+contextmenuAddpoint () {
+  this.setState({contextmenuDisplay: "none", contextmenuText: "Add waypoint"});
+  NewPoint.addPoint(this.WaypointsSource, this.WaypointsLayer, this.state.contextmenuCoord, this.state.ftcount);
+}
+
+//WIP missing layer filter function
+contextmenuDeletepoint () {
+  const ftDelete = map.getFeaturesAtPixel([this.state.contextmenuX, this.state.contextmenuY]);
+  console.log(ftDelete);
+  this.WaypointsSource.removeFeature(ftDelete[3]);
+  this.setState({contextmenuDeleteDisplay: "none"})
+};
 
 componentDidMount() {
   const waypointsSource = new OlSourceVector({});
@@ -214,45 +225,6 @@ componentDidMount() {
     this.setState({coordinate:e.coordinate, contextmessage1: "Add waypoint", ftcount: this.state.ftcount + 1});
   }
 
-  const addPoint = (f) => {
-    NewPoint.addPoint(waypointsSource, waypointsLayer, f.coordinate, this.state.ftcount);
-    this.setState({coordinate:f.coordinate, contextmessage1: "Add waypoint", ftcount: this.state.ftcount + 1});
-  }
-
-  const contextmenu = new ContextMenu({
-    width: 180,
-    defaultItems: false
-  });
-
-  this.contextmenu = contextmenu;
-
-  contextmenu.on('beforeopen', function(e) {
-    const waypointsSourcelength = waypointsSource.getFeatures().length;
-    if (waypointsSourcelength === 0) {
-      contextmenu.shift();
-      const contextmenu_startitems = [
-        {
-          text: "Set as Start",
-          classname: 'bold',
-          callback: setstart
-        }
-      ];
-      contextmenu.extend(contextmenu_startitems);
-    }
-    if (waypointsSourcelength > 0) {
-      contextmenu.shift();
-      const contextmenu_runitem = [
-        {
-          text: "Add Waypoint",
-          classname: "bold",
-          callback: addPoint
-        }
-      ];
-      contextmenu.extend(contextmenu_runitem);
-    }
-  })
-
-  map.addControl(contextmenu);
   map.addLayer(waypointsLayer);
   map.addLayer(directionsLayer);
   map.addLayer(userPositionLayer);
@@ -267,6 +239,19 @@ componentDidMount() {
     NewPoint.addPoint(waypointsSource, waypointsLayer, evt.coordinate, this.state.ftcount);
     this.setState({});
   })
+
+  //rightclick
+  map.getViewport().addEventListener('contextmenu', (evt) => {
+    evt.preventDefault();
+    const contextmenuCoord = map.getCoordinateFromPixel([evt.x, evt.y]);
+    const ftDelete = map.getFeaturesAtPixel([evt.x, evt.y], {});
+    this.setState({contextmenuCoord: contextmenuCoord, contextmenuX:evt.x, contextmenuY:evt.y});
+    if (ftDelete) {
+      this.setState({contextmenuText: "Delete Feature", contextmenuDeleteDisplay: "block"});
+    } else {
+    this.setState({ftcount: this.state.ftcount + 1, contextmenuDisplay: "block"});
+    }
+});
 
   // on.addFeature function
   waypointsSource.on('addfeature', (event) => {
@@ -323,7 +308,7 @@ componentDidMount() {
         const wpFeatures = waypointsSource.getFeatures();
         // sort array to avoid messy routes
         wpFeatures.sort(function (a,b) {
-          if (a.id_ > b.id_) {
+          if (a.id_ > b.id_) { //getid
             return 1
           }
           if (a.id_ < b.id_) {
@@ -378,6 +363,24 @@ componentDidMount() {
     <Imprint
     hideImprint={this.hideImprint.bind(this)}
     />}
+    <div
+      style={{display: this.state.contextmenuDisplay, position: 'fixed', top: this.state.contextmenuY-12, left: this.state.contextmenuX+10}}
+      >
+    <SimpleButton
+    className="contextmenu"
+    onClick={() => this.contextmenuAddpoint()}
+    >{this.state.contextmenuText}
+    </SimpleButton>
+    </div>
+    <div
+      style={{display: this.state.contextmenuDeleteDisplay, position: 'fixed', top: this.state.contextmenuY-12, left: this.state.contextmenuX+10}}
+      >
+    <SimpleButton
+    className="contextmenuDelete"
+    onClick={() => this.contextmenuDeletepoint()}
+    >{this.state.contextmenuText}
+    </SimpleButton>
+    </div>
 <div
   style={{position: 'fixed', top: 20, left: 20}}
 >
@@ -399,7 +402,7 @@ componentDidMount() {
     map={map}
     showMarker={true}
     follow={true}
-    tooltip="Geolocate"
+    tooltip="Geolocate, WIP currently not working"
     tooltipPlacement="right"
 >
   <i className="fa fa-location-arrow"></i>
@@ -408,6 +411,8 @@ componentDidMount() {
   className="toolbar-btn"
   icon={this.state.hillshadeIcon}
   onClick={() => this.toggleLayer(hillshade)}
+  tooltip="Toggle hillshade"
+  tooltipPlacement="right"
 /><br />
 <SimpleButton
   className="toolbar-btn"

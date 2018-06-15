@@ -36,7 +36,6 @@
   border-radius:15px;
   max-width: 350px !important;
   box-shadow: 5px 5px 10px #888888;
-  z-index: 1000;
 }
 .imprint {
   background-color: white;
@@ -44,6 +43,18 @@
   border-radius:15px;
   width: 500px !important;
   box-shadow: 5px 5px 10px #888888;
+}
+.contextmenu {
+  background-color: white;
+  padding: 5px;
+  width: 120px !important;
+  border-radius:10px;
+}
+.contextmenuDelete {
+  background-color: white;
+  padding: 5px;
+  width: 140px !important;
+  border-radius:10px;
 }
 .distancerange {
   background-color: white;

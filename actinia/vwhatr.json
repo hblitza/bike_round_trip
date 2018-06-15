@@ -1,0 +1,46 @@
+{
+  "list": [
+    {
+      "module": "v.what.r",
+      "id": "v_what_r_1",
+      "inputs": [
+        {
+          "map": {
+            "source": "vectorsource",
+            "type": "vector"
+          },
+          "param": "raster",
+          "value": "elev_ned_30m_new"
+        },
+        {
+          "raster": {
+            "source":
+          }
+        }
+      ],
+      "flags": "p"
+    },
+    {
+      "module": "r.slope.aspect",
+      "id": "r_slope_aspect_1",
+      "inputs": [
+        {
+          "param": "elevation",
+          "value": "elev_ned_30m_new"
+        }
+      ],
+      "outputs": [
+        {
+          "export": {
+            "format": "GTiff",
+            "type": "raster"
+          },
+          "param": "slope",
+          "value": "elev_ned_30m_new_slope"
+        }
+      ],
+      "flags": "a"
+    }
+  ],
+  "version": "1"
+}

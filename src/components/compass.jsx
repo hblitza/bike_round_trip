@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import './../assets/App.css';
+import {
+  SimpleButton
+} from '@terrestris/react-geo';
 
-export class Arrows extends Component {
+export class Compass extends Component {
   constructor(props) {
      super(props);
      this.state = {
@@ -47,12 +50,16 @@ export class Arrows extends Component {
           style={{'pointer-events': 'none', transform: deg, position: 'fixed', top: (window.innerHeight / 2 - 105), left: (window.innerWidth / 2 - 8.5)}}
           alt="needle"
         />
-        <div
-          style={{position: 'fixed', top: (window.innerHeight/ 2 - 165), right: (window.innerWidth / 2 - 165)}}
-          onClick={this.props.hideArrows}
-          >
-          <span class="dot">x</span>
-          </div>
+        <SimpleButton
+        className="ant-btn-circle"
+        style={{position: 'fixed', top: (window.innerHeight/ 2 - 165), right: (window.innerWidth / 2 - 165)}}
+        onClick={this.props.hideArrows}
+        tooltip="Close"
+        tooltipPlacement="right"
+        >
+        <p className="dot"/>
+        </SimpleButton>
+
       </div>
     )
   }

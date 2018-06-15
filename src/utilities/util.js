@@ -17,11 +17,12 @@ export class ORSurl {
 }
 
 export class NewPoint {
-  static addPoint(waypointsSource, waypointsLayer, clickCoordinate) {
+  static addPoint(waypointsSource, waypointsLayer, clickCoordinate, count) {
     let clickCoordinatePoint = new OlGeomPoint(clickCoordinate);
     let waypointsFeature = new OlFeature();
     waypointsFeature.setGeometry(clickCoordinate ?
       clickCoordinatePoint : null);
+    waypointsFeature.setId(count);
     waypointsSource.addFeature(waypointsFeature);
   }
 }
@@ -102,8 +103,6 @@ export class Turf {
     //turf creates a circle counterclockwise
     //depending on the bearing
     //move array element function
-
-
     destination.splice(8);
 
     function repeat(func, times) {

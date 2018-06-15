@@ -7,7 +7,7 @@ export class Infobox extends Component {
     return(
     <div
       style={{position: 'fixed', top: 20, left: 100}}
-      class="infobox"
+      className="infobox"
     >
     {this.props.message}
     <div>

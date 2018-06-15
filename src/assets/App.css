@@ -17,6 +17,14 @@
   background-color: #4277ce !important;
   border-color: #4277ce !important;
 }
+.imprint-btn {
+  background-color: #3066BE !important;
+  border-color: #FFFFFF !important;
+}
+.imprint-btn:hover {
+  background-color: #4277ce !important;
+  border-color: #4277ce !important;
+}
 .placesearch {
   position: fixed !important;
   left: 20px !important;
@@ -29,6 +37,13 @@
   max-width: 350px !important;
   box-shadow: 5px 5px 10px #888888;
   z-index: 1000;
+}
+.imprint {
+  background-color: white;
+  padding: 15px;
+  border-radius:15px;
+  width: 500px !important;
+  box-shadow: 5px 5px 10px #888888;
 }
 .distancerange {
   background-color: white;
@@ -48,13 +63,40 @@
   height: 30px;
   width: 30px;
   background-color: #FFF;
-  border: 3px solid #3066BE;
+  border: 6px solid #3066BE;
   border-radius: 50%;
   display: inline-block;
   font-weight: bold;
   text-align: center;
 }
+
 .dot:hover {
-  background-color: #3066BE;
+  background-color: #f7222d;
   color: #FFF;
+  border: 6px solid #3066BE;
+}
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 1;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+    visibility: visible;
 }

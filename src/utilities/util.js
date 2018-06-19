@@ -23,18 +23,25 @@ export class NewPoint {
     waypointsFeature.setGeometry(clickCoordinate ?
       clickCoordinatePoint : null);
     waypointsFeature.setId(count);
+    if (count < 8) {
     waypointsSource.addFeature(waypointsFeature);
+  } else {
+    alert('Maximum number of waypoints reached.')
+  }
   }
 }
 
 export class NewRoute {
 static calcRoute(directionssrc, directionsLayer, event, profile) {
-  const vectorSource = event;
+    const vectorSource = event;
+    const n_features = event.getFeatures().length;
     const dgeom = [];
     vectorSource.getFeatures().forEach(function(item) {
       dgeom.push(OlProjection.toLonLat(item.getGeometry().getCoordinates()) + '|')
     });
+    if (n_features < 9) {
     dgeom.push(OlProjection.toLonLat(vectorSource.getFeatures()[0].getGeometry().getCoordinates()));
+    }
     const locations = dgeom.join("");
     const orsurl = ORSurl.geturl(locations, profile);
     fetch(orsurl).then(function (response) {

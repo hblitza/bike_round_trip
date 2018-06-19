@@ -9,9 +9,17 @@ export class Imprint extends Component {
     return(
       <div>
     <div
-      style={{position: 'fixed', top: (window.innerHeight / 2 - 400), left: (window.innerWidth / 2 - 250)}}
       className="imprint"
-    ><h2>Imprint and legal notes</h2><p/>
+    >
+    <SimpleButton
+    className="ant-btn-circle close-btn"
+    onClick={this.props.hideImprint}
+    tooltip="Close"
+    tooltipPlacement="right"
+    >
+    <p className="dot"/>
+    </SimpleButton>
+    <h2>Imprint and legal notes</h2><p/>
     This application has been build in the context of an internship at terrestris GmbH in Bonn, Germany.
     The main object was to get an insight into open source WebGIS tools and open geodata.<br/><br/>
     <h3>Used Tools, Libraries and Services</h3>
@@ -36,17 +44,6 @@ export class Imprint extends Component {
     <a href="https://www.terrestris.de/datenschutzerklaerung/"> German </a><br/><br/>
     <h3>Contact Person</h3>
     blitza(ät)terrestris.de
-      </div>
-        <div>
-        <SimpleButton
-        className="ant-btn-circle"
-        style={{margin: 5, position: 'fixed', top: (window.innerHeight / 2 - 400), right: (window.innerWidth / 2 - 250)}}
-        onClick={this.props.hideImprint}
-        tooltip="Close"
-        tooltipPlacement="right"
-        >
-        <p className="dot"/>
-        </SimpleButton>
         </div>
       </div>
     )

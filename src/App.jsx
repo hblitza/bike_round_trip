@@ -131,16 +131,19 @@ hideImprint () {
 }
 
 calcCircleTurf () {
+  this.WaypointsSource.clear({fast: true});
+  this.directionsVectorSource.clear();
+  this.setState({ArrowisHidden:true})
   const circle = Turf.calcCircle(this.state.startcoordinate, this.state.bearing, this.state.distance);
   const geojsonformat = new OlFormatGeoJSON();
   let circlewaypoints = [];
   circle.forEach(function(item) {
     circlewaypoints.push(geojsonformat.readFeature(item, {dataProjection: 'EPSG:4326',featureProjection: 'EPSG:3857'}));
   });
-  this.circleSource.addFeatures(circlewaypoints);
-  NewRoute.calcRoute(this.directionsVectorSource, this.directionsVectorLayer, this.circleSource, this.state.Profile);
-  this.setState({message:dialogue[4]});
-  this.WaypointsSource.clear();
+  circlewaypoints.forEach((item, i) => {
+    item.setId(i+1);
+  });
+  this.WaypointsSource.addFeatures(circlewaypoints);
 }
 
 geolocate() {
@@ -152,14 +155,25 @@ geolocate() {
 }
 
 clearmap () {
-  this.profilePoint.setGeometry(new OlGeomPoint([0,0]));
-  map.removeControl(this.Profile);
+  this.WaypointsSource.clear({fast: true});
   this.directionsVectorSource.clear();
   this.circleSource.clear();
-  this.setState({contextmenuText: "Set start", contextmenuDisplay: "none", ftcount: 0, message:dialogue[0],ImprintisHidden:true,DLisHidden:true,isHidden:true,ArrowisHidden:true,DistanceisHidden:true,RouteLength:""});
+  this.profilePoint.setGeometry(new OlGeomPoint([0,0]));
+  map.removeControl(this.Profile);
+  this.setState({contextmenuText: "Set start",
+                  contextmenuDeleteDisplay: "none",
+                  contextmenuDisplay: "none",
+                  ftcount: 0,
+                  message:dialogue[0],
+                  ImprintisHidden:true,
+                  DLisHidden:true,
+                  isHidden:true,
+                  ArrowisHidden:true,
+                  DistanceisHidden:true,
+                  RouteLength:""
+                });
   let geolocateoverlay = map.getOverlays().getArray()[0];
   map.removeOverlay(geolocateoverlay);
-  this.WaypointsSource.clear();
 }
 
 contextmenuAddpoint () {
@@ -169,10 +183,20 @@ contextmenuAddpoint () {
 
 //WIP missing layer filter function
 contextmenuDeletepoint () {
-  const ftDelete = map.getFeaturesAtPixel([this.state.contextmenuX, this.state.contextmenuY]);
-  console.log(ftDelete);
-  this.WaypointsSource.removeFeature(ftDelete[3]);
-  this.setState({contextmenuDeleteDisplay: "none"})
+  const pixel = [this.state.contextmenuX, this.state.contextmenuY];
+  const features = [];
+  const layers = [];
+  map.forEachFeatureAtPixel(pixel, function(feature, layer) {
+          layers.push(layer);
+          features.push(feature);
+        }, {
+          layerFilter: function (layer) {
+            return layer.get("deleteable") === true;
+            }
+        });
+  const source = layers[0].getSource();
+  source.removeFeature(features[0]);
+  this.setState({contextmenuDeleteDisplay: "none", ftcount: this.state.ftcount - 2});
 };
 
 componentDidMount() {
@@ -181,11 +205,14 @@ componentDidMount() {
     source: waypointsSource,
     style: ptorange
   });
+  waypointsLayer.set("deleteable", true);
   const circleSource = new OlSourceVector({});
   const circlewaypointsLayer = new OlLayerVector({
+    id: 11,
     source: circleSource,
     style: ptorange
   });
+  circlewaypointsLayer.set("deleteable", true);
   const directionssrc = new OlSourceVector({});
   const directionsLayer = new OlLayerVector({
     source: directionssrc,
@@ -193,6 +220,7 @@ componentDidMount() {
   });
   const userPositionSource = new OlSourceVector({});
   const userPositionLayer = new OlLayerVector({
+    id: "deleteable",
     source: userPositionSource,
     style: ptred
   });
@@ -229,11 +257,11 @@ componentDidMount() {
   map.addLayer(directionsLayer);
   map.addLayer(userPositionLayer);
   map.addLayer(circlewaypointsLayer);
-  map.addLayer(this.profilePointLayer);
+  map.addLayer(profilePointLayer);
 
   //on.click
   map.on('click', (evt) => {
-    this.setState({ coordinate:evt.coordinate, ftcount: this.state.ftcount + 1 });
+    this.setState({ coordinate:evt.coordinate, ftcount: this.state.ftcount + 1, contextmenuText: "Add waypoint" });
     this.circleSource.clear();
     this.directionsVectorSource.clear();
     NewPoint.addPoint(waypointsSource, waypointsLayer, evt.coordinate, this.state.ftcount);
@@ -254,21 +282,32 @@ componentDidMount() {
 });
 
   // on.addFeature function
-  waypointsSource.on('addfeature', (event) => {
-    event.target.refresh();
-    const n_features = event.target.getFeatures();
-    if (n_features.length === 1) {
+  waypointsSource.on(['addfeature', 'removefeature'], (event) => {
+
+    const n_features = event.target.getFeatures().length;
+    if (n_features === 0) {
+      this.directionsVectorSource.clear();
+      this.setState({DLisHidden: true, ArrowisHidden:true, RouteLength: ""});
+      this.setMessage(0);
+      this.profilePoint.setGeometry(new OlGeomPoint([0,0]));
+      map.removeControl(this.Profile);
+    } else if (n_features === 1) {
+      this.profilePoint.setGeometry(new OlGeomPoint([0,0]));
+      map.removeControl(this.Profile);
       this.directionsVectorSource.clear();
       this.setMessage(2);
       const startpt = OlProjection.toLonLat(event.target.getFeatures()[0].getGeometry().getCoordinates());
-      this.setState({startcoordinate:startpt, ArrowisHidden:false});
-    } else if (n_features.length === 2) {
+      this.setState({startcoordinate:startpt, ArrowisHidden:false, DLisHidden: true, RouteLength: ""});
+      this.profilePoint.setGeometry(new OlGeomPoint([0,0]));
+    } else if (n_features === 2) {
+      this.directionsVectorSource.clear();
       this.setMessage(3);
-      this.setState({ArrowisHidden:true})
-    } else if (n_features.length === 3) {
+      this.setState({DLisHidden: true, RouteLength: "", ArrowisHidden:true});
+      this.profilePoint.setGeometry(new OlGeomPoint([0,0]));
+      map.removeControl(this.Profile);
+    } else if (n_features > 2) {
+      console.log('fuck')
       this.setMessage(4);
-      NewRoute.calcRoute(directionssrc, directionsLayer, waypointsSource, this.state.Profile);
-    } else if (n_features.length > 3) {
       NewRoute.calcRoute(directionssrc, directionsLayer, waypointsSource, this.state.Profile);
     }
   });
@@ -308,39 +347,20 @@ componentDidMount() {
         const wpFeatures = waypointsSource.getFeatures();
         // sort array to avoid messy routes
         wpFeatures.sort(function (a,b) {
-          if (a.id_ > b.id_) { //getid
+          if (a.getId() > b.getId()) {
             return 1
           }
-          if (a.id_ < b.id_) {
+          if (a.getId() < b.getId()) {
             return -1;
           }
           return 0
         });
-        waypointsSource.clear();
+        waypointsSource.clear({fast: true});
         waypointsSource.addFeatures(wpFeatures);
+        directionssrc.clear();
         NewRoute.calcRoute(directionssrc, directionsLayer, waypointsSource, this.state.Profile);
       }
     });
-    const modifyFeatures2 = new OlInteractionModify({
-      source: circleSource
-    });
-    map.addInteraction(modifyFeatures2);
-    modifyFeatures2.on('modifyend', (evt) => {
-      const circleSourceFeatures = circleSource.getFeatures();
-      // sort array to avoid messy routes
-      circleSourceFeatures.sort(function (a,b) {
-        if (a.ol_uid > b.ol_uid) {
-          return 1
-        }
-        if (a.ol_uid < b.ol_uid) {
-          return -1;
-        }
-        return 0
-      });
-      circleSource.clear();
-      circleSource.addFeatures(circleSourceFeatures);
-      NewRoute.calcRoute(directionssrc, directionsLayer, circleSource, this.state.Profile);
-    })
   })
 };
 

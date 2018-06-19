@@ -35,24 +35,25 @@ export class Compass extends Component {
   };
 
   render() {
+    //wip, translate of needle
     const deg = 'rotate(' + this.state.bearing + 'deg)';
     return(
-      <div>
+      <div
+        className="compass">
         <img
           src={ this.compass }
-          style={{opacity: 1, position: 'fixed', top: (window.innerHeight / 2 - 200), left: (window.innerWidth / 2 - 200)}}
           onMouseMove={(evt) => this.getBearing(evt)}
           onClick={this.onSelectBearing.bind(this)}
           alt="compass"
         />
         <img
+          className="needle"
           src={ this.arrow }
-          style={{'pointer-events': 'none', transform: deg, position: 'fixed', top: (window.innerHeight / 2 - 105), left: (window.innerWidth / 2 - 8.5)}}
+          style={{'pointer-events': 'none', transform: deg}}
           alt="needle"
         />
         <SimpleButton
-        className="ant-btn-circle"
-        style={{position: 'fixed', top: (window.innerHeight/ 2 - 165), right: (window.innerWidth / 2 - 165)}}
+        className="ant-btn-circle close-btn-compass"
         onClick={this.props.hideArrows}
         tooltip="Close"
         tooltipPlacement="right"

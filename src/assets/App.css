@@ -1,6 +1,7 @@
 #map {
   width: 100%;
 }
+
 .profile {
   background-repeat: no-repeat;
   background-size: 13px auto;
@@ -37,13 +38,6 @@
   max-width: 350px !important;
   box-shadow: 5px 5px 10px #888888;
 }
-.imprint {
-  background-color: white;
-  padding: 15px;
-  border-radius:15px;
-  width: 500px !important;
-  box-shadow: 5px 5px 10px #888888;
-}
 .contextmenu {
   background-color: white;
   padding: 5px;
@@ -70,22 +64,6 @@
   width: 500px;
   padding: 15px;
 }
-.dot {
-  height: 30px;
-  width: 30px;
-  background-color: #FFF;
-  border: 6px solid #3066BE;
-  border-radius: 50%;
-  display: inline-block;
-  font-weight: bold;
-  text-align: center;
-}
-
-.dot:hover {
-  background-color: #f7222d;
-  color: #FFF;
-  border: 6px solid #3066BE;
-}
 .tooltip {
     position: relative;
     display: inline-block;
@@ -110,4 +88,78 @@
 /* Show the tooltip text when you mouse over the tooltip container */
 .tooltip:hover .tooltiptext {
     visibility: visible;
+}
+.imprint {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  right: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 15px;
+  border-radius:15px;
+  min-width: 500px !important;
+  max-width: 80% !important;
+  box-shadow: 5px 5px 10px #888888;
+  z-index: 1000;
+}
+.close-btn {
+  position: fixed !important;
+  top: 10px !important;
+  right: 10px !important;
+}
+.dot {
+  height: 30px;
+  width: 30px;
+  background-color: #FFF;
+  border: 6px solid #3066BE;
+  border-radius: 50%;
+  display: inline-block;
+  font-weight: bold;
+  text-align: center;
+}
+.dot:hover {
+  background-color: #f7222d;
+  color: #FFF;
+  border: 6px solid #3066BE;
+}
+.compass {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  right: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  height: 400px;
+}
+
+.compass img {
+  height: 100%;
+  width: 100%;
+  }
+
+.needle {
+  position: fixed !important;
+  top: 0px !important;
+  right: 0px !important;
+}
+.close-btn-compass {
+  position: fixed !important;
+  top: 34px !important;
+  right: 34px !important;
+}
+@media only screen and (max-width: 768px) {
+  .imprint {
+    min-width: 100% !important;
+    max-width: 100% !important;
+    height: 100%;
+  }
+  .compass {
+    width: 200px;
+    height: 200px;
+  }
+  .close-btn-compass {
+    top: 3px !important;
+    right: 3px !important;
+  }
 }

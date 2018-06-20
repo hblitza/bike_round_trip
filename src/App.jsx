@@ -103,7 +103,7 @@ toggleLayer (layer) {
 
 toggleNominatim () {
   if (this.state.nominatimDisplay === "none") {
-    this.setState({nominatimDisplay: "block"})
+    this.setState({nominatimDisplay: "block", isHidden: true})
   } else {
     this.setState({nominatimDisplay: "none"})
   }
@@ -176,7 +176,8 @@ clearmap () {
                   isHidden:true,
                   ArrowisHidden:true,
                   DistanceisHidden:true,
-                  RouteLength:""
+                  RouteLength:"",
+                  nominatimDisplay: "none"
                 });
   let geolocateoverlay = map.getOverlays().getArray()[0];
   map.removeOverlay(geolocateoverlay);
@@ -198,7 +199,7 @@ contextmenuDeletepoint () {
         }, {
           layerFilter: function (layer) {
             return layer.get("deleteable") === true;
-            }
+          }
         });
   const source = layers[0].getSource();
   source.removeFeature(features[0]);
@@ -252,13 +253,6 @@ componentDidMount() {
   this.profilePoint = profilePoint;
   this.profilePointSource.addFeature(this.profilePoint);
 
-  const setstart = (e) => {
-    this.circleSource.clear();
-    this.directionsVectorSource.clear();
-    NewPoint.addPoint(waypointsSource, waypointsLayer, e.coordinate, this.state.ftcount);
-    this.setState({coordinate:e.coordinate, contextmessage1: "Add waypoint", ftcount: this.state.ftcount + 1});
-  }
-
   map.addLayer(waypointsLayer);
   map.addLayer(directionsLayer);
   map.addLayer(userPositionLayer);
@@ -267,7 +261,7 @@ componentDidMount() {
 
   //on.click
   map.on('click', (evt) => {
-    this.setState({ coordinate:evt.coordinate, ftcount: this.state.ftcount + 1, contextmenuText: "Add waypoint" });
+    this.setState({ coordinate:evt.coordinate, ftcount: this.state.ftcount + 1, contextmenuText: "Add waypoint", nominatimDisplay: "none" });
     this.circleSource.clear();
     this.directionsVectorSource.clear();
     NewPoint.addPoint(waypointsSource, waypointsLayer, evt.coordinate, this.state.ftcount);
@@ -277,13 +271,19 @@ componentDidMount() {
   //rightclick
   map.getViewport().addEventListener('contextmenu', (evt) => {
     evt.preventDefault();
+    const n_features = this.WaypointsSource.getFeatures().length;
+    if (n_features === 0) {
+      this.setState({contextmenuText: "Set Start"});
+    } else {
+      this.setState({contextmenuText: "Add waypoint"});
+    }
     const contextmenuCoord = map.getCoordinateFromPixel([evt.x, evt.y]);
     const ftDelete = map.getFeaturesAtPixel([evt.x, evt.y], {});
-    this.setState({contextmenuCoord: contextmenuCoord, contextmenuX:evt.x, contextmenuY:evt.y});
+    this.setState({contextmenuCoord: contextmenuCoord, contextmenuX:evt.x, contextmenuY:evt.y, nominatimDisplay: "none"});
     if (ftDelete) {
       this.setState({contextmenuText: "Delete Feature", contextmenuDeleteDisplay: "block"});
     } else {
-    this.setState({ftcount: this.state.ftcount + 1, contextmenuDisplay: "block"});
+      this.setState({ftcount: this.state.ftcount + 1, contextmenuDisplay: "block"});
     }
 });
 
@@ -303,7 +303,7 @@ componentDidMount() {
       this.directionsVectorSource.clear();
       this.setMessage(2);
       const startpt = OlProjection.toLonLat(event.target.getFeatures()[0].getGeometry().getCoordinates());
-      this.setState({startcoordinate:startpt, ArrowisHidden:false, DLisHidden: true, RouteLength: ""});
+      this.setState({contextmenuText: "Add waypoint", startcoordinate:startpt, ArrowisHidden:false, DLisHidden: true, RouteLength: ""});
       this.profilePoint.setGeometry(new OlGeomPoint([0,0]));
     } else if (n_features === 2) {
       this.directionsVectorSource.clear();

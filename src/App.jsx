@@ -57,8 +57,14 @@ class App extends Component {
        nominatimDisplay: "none",
        contextmenuDisplay: "none",
        contextmenuDeleteDisplay: "none",
-       contextmenuText: "Set start"
+       contextmenuText: "Set start",
+       windowInnerHeight: window.innerHeight
      }
+    window.onresize = this.onWindowResize.bind(this);
+  }
+
+  onWindowResize (event) {
+    this.setState({windowInnerHeight: event.target.innerHeight});
   }
 
   toggleProfile () {
@@ -369,7 +375,7 @@ componentDidMount() {
       <div className="App">
       <MapComponent
         map={map}
-        style={{height: window.innerHeight}}
+        style={{height: this.state.windowInnerHeight}}
       />
 {!this.state.isHidden &&
   <Infobox

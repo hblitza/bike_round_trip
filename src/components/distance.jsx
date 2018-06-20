@@ -48,7 +48,7 @@ export class Distance extends Component {
             min={10}
             max={150}
             step={5}
-            style={{ marginLeft: 16 }}
+            style={{ width: "65px", marginLeft: 16 }}
             value={this.state.distance}
             onChange={this.onChange}
           />
@@ -56,6 +56,7 @@ export class Distance extends Component {
           <Col span={2} />
           <Col span={4}>
           <SimpleButton
+          className="toolbar-btn"
           style={{ marginLeft: 16 }}
           onClick={this.selectDistance.bind(this)}
           >Go

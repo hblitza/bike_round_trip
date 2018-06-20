@@ -7,7 +7,6 @@ import {
 export class Imprint extends Component {
   render() {
     return(
-      <div>
     <div
       className="imprint"
     >
@@ -45,7 +44,6 @@ export class Imprint extends Component {
     <h3>Contact Person</h3>
     blitza(ät)terrestris.de
         </div>
-      </div>
     )
   }
 }

@@ -156,15 +156,27 @@
   top: 34px !important;
   right: 34px !important;
 }
+.nominatim {
+  position: fixed;
+  top: 12px;
+  left: 40px;
+}
 @media only screen and (max-width: 768px) {
+  .nominatim {
+    position: fixed;
+    top: 8px;
+    left: 50px;
+  }
   .toolbar {
     top: 10px;
     left: 10px;
   }
   .imprint {
     min-width: 100% !important;
-    max-width: 100% !important;
-    height: 100%;
+    min-width: 100% !important;
+    min-height: 100% !important;
+    max-height: 100% !important;
+    border-radius:0px;
   }
   .compass {
     width: 200px;

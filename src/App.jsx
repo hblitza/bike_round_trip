@@ -443,19 +443,22 @@ componentDidMount() {
   className="toolbar-btn"
   icon="trash"
   onClick={() => this.clearmap()}
-/><br />
-<NominatimSearch
-    className=""
-    map={map}
-    size= "large"
-    style={{
-      width: '80%',
-      display: this.state.nominatimDisplay
-    }}
-    countrycodes="de"
-    viewbox="5.8663152875603828,50.3225669900622137,9.4617416224757260,52.5314922619894915"
 />
-<br />
+</div>
+<div
+  className="nominatim"
+  >
+  <NominatimSearch
+      className="nominatim"
+      map={map}
+      size= "large"
+      style={{
+        width: '80%',
+        display: this.state.nominatimDisplay
+      }}
+      countrycodes="de"
+      viewbox="5.8663152875603828,50.3225669900622137,9.4617416224757260,52.5314922619894915"
+  />
 </div>
 <div
   style={{position: 'fixed', bottom: 20, left: 20}}

@@ -402,7 +402,7 @@ componentDidMount() {
     </SimpleButton>
     </div>
 <div
-  style={{position: 'fixed', top: 20, left: 20}}
+  className="toolbar"
 >
 <SimpleButton
   className="toolbar-btn"

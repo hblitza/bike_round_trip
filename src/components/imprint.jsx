@@ -23,15 +23,16 @@ export class Imprint extends Component {
     The main object was to get an insight into open source WebGIS tools and open geodata.<br/><br/>
     <h3>Used Tools, Libraries and Services</h3>
     <ul>
-    <li>PostgreSQL</li>
-    <li>imposm3</li>
-    <li>Geoserver</li>
-    <li>Maputnik</li>
-    <li>Mapproxy</li>
-    <li>Openlayers</li>
-    <li>react-geo</li>
-    <li>turf.js</li>
-    <li>API of openrouteservice</li>
+    <li><a href="https://www.postgresql.org/">PostgreSQL</a></li>
+    <li><a href="https://github.com/omniscale/imposm3">imposm3</a></li>
+    <li><a href="http://geoserver.org/">Geoserver</a></li>
+    <li><a href="https://github.com/maputnik/editor">Maputnik</a></li>
+    <li><a href="https://mapproxy.org/">Mapproxy</a></li>
+    <li><a href="https://openlayers.org/">Openlayers</a></li>
+    <li><a href="https://github.com/terrestris/react-geo">react-geo</a></li>
+    <li><a href="https://www.turfjs.org/">turf.js</a></li>
+    <li><a href="https://www.openrouteservice.org/">API of openrouteservice</a></li>
+    <li><a href="http://actinia.mundialis.de/">actinia API by mundialis</a></li>
     </ul>
     <h3>Graphics</h3>
     <ul>

@@ -4,6 +4,12 @@ import OlProj from 'ol/proj';
 
 export class Landuse {
   static forest(startcoordinate, landuseSource, waypointsSource) {
+    const startcoordinate4326 = OlProj.toLonLat(startcoordinate);
+    const start = turf.point(startcoordinate4326);
+    const ptWithinNRW = Landuse.ptWithinNRW(start);
+    if (ptWithinNRW === false) {
+      alert('This feature is only available in NRW')
+    } else {
     const forest = require('./../assets/forest_landuse_gen_gt_3m_4326.json');
     const geom = forest;
     const landuseFeature = new OlFormatGeoJSON().readFeatures(geom, {
@@ -11,11 +17,10 @@ export class Landuse {
       featureProjection: 'EPSG:3857'
     });
     landuseSource.addFeatures(landuseFeature);
-    const startcoordinate4326 = OlProj.toLonLat(startcoordinate);
+
     const closestFeature = landuseSource.getClosestFeatureToCoordinate(startcoordinate); //id 222
     const closestFeatureIndex = closestFeature.getProperties().id - 1;
     const closestFeatureTurf = geom.features[closestFeatureIndex];
-    const start = turf.point(startcoordinate4326);
     const center = turf.center(closestFeatureTurf);
     const features = turf.featureCollection([
           start,
@@ -39,6 +44,7 @@ export class Landuse {
     });
     waypointsSource.addFeatures(rhombwaypoints);
   }
+}
 static pointsAlongLine(linestring, start, options) {
   const nearestPoint = turf.nearestPointOnLine(linestring, start, options);
   const lineCoords = linestring.coordinates;
@@ -66,6 +72,12 @@ static pointsAlongLine(linestring, start, options) {
 }
 static waterways(startcoordinate, landuseSource, waypointsSource) {
   const options = {units: 'kilometers'};
+  const startcoordinate4326 = OlProj.toLonLat(startcoordinate);
+  const start = turf.point(startcoordinate4326);
+  const ptWithinNRW = Landuse.ptWithinNRW(start);
+  if (ptWithinNRW === false) {
+    alert('This feature is only available in NRW');
+  } else {
   const waterways = require('./../assets/waterways_nrw_gen.json');
   const geom = waterways;
   const landuseFeature = new OlFormatGeoJSON().readFeatures(geom, {
@@ -73,8 +85,6 @@ static waterways(startcoordinate, landuseSource, waypointsSource) {
     featureProjection: 'EPSG:3857'
   });
   landuseSource.addFeatures(landuseFeature);
-  const startcoordinate4326 = OlProj.toLonLat(startcoordinate);
-  const start = turf.point(startcoordinate4326);
   const closestFeature = landuseSource.getClosestFeatureToCoordinate(startcoordinate);
   const closestFeatureIndex = closestFeature.getProperties().id - 1;
   const closestFeatureTurf = geom.features[closestFeatureIndex];
@@ -103,6 +113,7 @@ static waterways(startcoordinate, landuseSource, waypointsSource) {
     item.setId(i+10);
   });
   waypointsSource.addFeatures(rhombwaypoints);
+  }
 }
 static translatePoints(points, bearing) {
   const pointsTranslated = [];
@@ -117,5 +128,15 @@ static LineStringBearing(linestring) {
   const p2 = turf.point(linestring.geometry.coordinates[length-1]);
   const bearing = turf.bearing(p1,p2);
   return bearing
+}
+static ptWithinNRW(point) {
+  const nrwData = require('./../assets/nrw_gen.json');
+  const nrwMask = turf.feature(nrwData.features[0].geometry);
+  const ptsWithin = turf.pointsWithinPolygon(point, nrwMask);
+  if (ptsWithin.features.length ===1) {
+    return true
+  } else {
+    return false
+  }
 }
 };

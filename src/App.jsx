@@ -374,9 +374,12 @@ componentDidMount() {
     } else if (n_features > 2 && n_features < 8) {
       this.setMessage(4);
       Openrouteservice.calcRoute(directionssrc, directionsLayer, waypointsSource, this.state.Profile);
-    } else if (n_features === 8 && event.feature.getId() === 10) {
-      console.log('test');
+    } else if (n_features === 5 && event.feature.getId() === 10) {
       Openrouteservice.calcRoute(directionssrc, directionsLayer, waypointsSource, this.state.Profile);
+      this.setMessage(4);
+    } else if (n_features === 8 && event.feature.getId() === 10) {
+      Openrouteservice.calcRoute(directionssrc, directionsLayer, waypointsSource, this.state.Profile);
+      this.setMessage(4);
     } else if (n_features === 9 && event.feature.getId() === 1) {
       Openrouteservice.calcRoute(directionssrc, directionsLayer, waypointsSource, this.state.Profile);
     } else if (n_features > 9 && event.feature.getId() === 1) {

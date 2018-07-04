@@ -56,10 +56,10 @@ export const dgmNRW = new OlLayerImage({
 });
 
 //Set layers
-const basemap = bikestyle;
-export const hillshade = dgmNRWcached;
-//const basemap = osm;
-//export const hillshade = dgmNRW;
+//const basemap = bikestyle;
+//export const hillshade = dgmNRWcached;
+const basemap = osm;
+export const hillshade = dgmNRW;
 
 const center = [ 788453.4890155146, 6573085.729161344 ];
 

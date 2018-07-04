@@ -36,7 +36,11 @@ export class Imprint extends Component {
     <h3>Graphics</h3>
     <ul>
     <li>Compass by <a href="https://thenounproject.com/search/?q=compass&i=25128">André Luiz</a></li>
-    <li>Bike by <a href="https://thenounproject.com/search/?q=bike&i=1304526">Sewon Park</a></li>
+    <li>Racing cycle by <a href="https://thenounproject.com/search/?q=bike&i=1304526">Sewon Park</a></li>
+    <li>Forest by <a href="https://thenounproject.com/search/?q=forest&i=867264">Pablo Rozenberg</a></li>
+    <li>River by <a href="https://thenounproject.com/search/?q=river&i=1639586">BomSymbols, TH</a></li>
+    <li>Hiker by <a href="https://thenounproject.com/search/?q=hiker&i=31779">Lius Prado</a></li>
+    <li>Biker by <a href="https://thenounproject.com/search/?q=biker&i=655697">Frederico Panzano</a></li>
     </ul>
     <h3>Legal Notes</h3>
     Privacy Policy of <a href="https://www.terrestris.de">terrestris:</a><a href="https://www.terrestris.de/en/datenschutzerklaerung/"> English</a>;

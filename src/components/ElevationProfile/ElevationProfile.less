@@ -1,0 +1,35 @@
+.intersect-path {
+  stroke-width: 1.5px;
+
+  .cross-section {
+    stroke-dasharray: 5;
+    stroke: black;
+  }
+}
+
+.elev-path {
+  stroke-width: 1.5px;
+  stroke: @primary-color;
+  fill: none;
+}
+
+.elev-area {
+  fill: fadeout(lighten(@primary-color, 50%), 50%);
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: black;
+  shape-rendering: crispEdges;
+}
+
+.focus-circle {
+  stroke: darken(@primary-color, 25%);
+  stroke-width: 2px;
+  fill: lighten(@primary-color, 25%);
+}
+
+.focus-text {
+  font-size: 14px;
+}

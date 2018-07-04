@@ -162,6 +162,117 @@
   top: 12px;
   left: 40px;
 }
+.chooseProfile {
+  background-color:rgba(255,255,255,1);
+  border-radius:15px;
+  box-shadow: 5px 5px 10px #888888;
+  z-index: 1000;
+  position: fixed;
+  top: 50%;
+  margin-top: -40px;
+  left: 50%;
+  margin-left: -160px;
+  height: 100px;
+  width: 320px;
+  padding: 10px;
+}
+.chooseLanduse {
+  background-color:rgba(255,255,255,0.8);
+  border-radius:15px;
+  box-shadow: 5px 5px 10px #888888;
+  z-index: 1000;
+  position: fixed;
+  top: 50%;
+  margin-top: -40px;
+  left: 50%;
+  margin-left: -160px;
+  height: 100px;
+  width: 220px;
+  padding: 10px;
+}
+.chooseMethod {
+  background-color:rgba(255,255,255,0.8);
+  border-radius:15px;
+  box-shadow: 5px 5px 10px #888888;
+  z-index: 1000;
+  position: fixed;
+  top: 50%;
+  margin-top: -40px;
+  left: 50%;
+  margin-left: -160px;
+  height: 120px;
+  padding: 10px;
+}
+.profileText {
+  border-radius:15px;
+  position: absolute;
+  top: 0px;
+  visibility: hidden;
+  height: 70px;
+  width: 70px;
+  background-color: white;
+  text-align: center;
+  vertical-align: bottom;
+  margin: 5px;
+  font-weight: bold;
+}
+.profileText {
+  visibility: visible;
+}
+.profileButton {
+  width: 80px;
+  height: 80px !important;
+  margin-left: 10px;
+  margin-right: 10px;
+  background-color: white !important;
+  border: 2px solid #3066BE !important;
+}
+.profileButton:hover {
+  background-color: #3066BE !important;
+}
+.methodButton {
+  background-color: #3066BE !important;
+  border-color: #FFFFFF !important;
+  width: 100% !important;
+}
+.methodButton:hover {
+  background-color: #4277ce !important;
+  border-color: #4277ce !important;
+}
+.forestButton {
+  width: 80px;
+  height: 80px !important;
+  margin-left: 10px;
+  margin-right: 10px;
+  background-color: white !important;
+  border: 2px solid #3066BE !important;
+}
+.forestButton:hover {
+  background-color: #2F9C50 !important;
+  border: 0px solid #3066BE !important;
+}
+.riverButton {
+  width: 80px;
+  height: 80px !important;
+  margin-left: 10px;
+  margin-right: 10px;
+  background-color: white !important;
+  border: 2px solid #3066BE !important;
+}
+.riverButton:hover {
+  background-color: #3ABFD6 !important;
+  border: 0px solid #3066BE !important;
+}
+
+.profileIcon {
+  transform: translate(-10px);
+}
+.ElevationProfile {
+  position: fixed;
+  top: 20px;
+  right: 50px;
+  background-color: white;
+}
 @media only screen and (max-width: 768px) {
   .nominatim {
     position: fixed;

@@ -5,10 +5,6 @@ import forest from './../assets/forest_landuse_gen_gt_3m_4326.json';
 import waterways from './../assets/waterways_nrw_gen.json';
 
 export class Landuse {
-  static test(){
-    //const forest = require('!json-loader!./../assets/forest_landuse_gen_gt_3m_4326.json');
-    console.log(forest)
-  }
   static forest(startcoordinate, landuseSource, waypointsSource) {
     const startcoordinate4326 = OlProj.toLonLat(startcoordinate);
     const start = turf.point(startcoordinate4326);

@@ -317,10 +317,17 @@ componentDidMount() {
 
   //on.click
   map.on('click', (evt) => {
+    fetch('https://hblitza.uber.space/data/login.json').then((response) => {
+      return response.json();
+    }).then((json) => {
+      console.log(json)
+    });
+    /*
     this.setState({ coordinate:evt.coordinate, ftcount: this.state.ftcount + 1, contextmenuText: "Add waypoint", nominatimDisplay: "none" });
     this.circleSource.clear();
     this.directionsVectorSource.clear();
     NewPoint.addPoint(waypointsSource, waypointsLayer, evt.coordinate, this.state.ftcount);
+    */
   });
 
   //rightclick

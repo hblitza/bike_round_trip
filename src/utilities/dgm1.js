@@ -79,7 +79,7 @@ export class DGM1 {
         method: 'POST',
         headers: new Headers({
           'Content-Type': 'application/json',
-          'Authorization': 'Basic ' + btoa('************') //hide password before pushing to gh
+          'Authorization': 'Basic ' + btoa('demouser:gu3st!pa55w0rd') //hide password before pushing to gh
         }),
         body: JSON.stringify(processChain)
       }).then( (response) => {
@@ -92,7 +92,7 @@ export class DGM1 {
             yield fetch(statusUrl, {
               method: 'GET',
               headers: new Headers({
-                'Authorization': 'Basic ' + btoa('************') //hide password before pushing to gh
+                'Authorization': 'Basic ' + btoa('demouser:gu3st!pa55w0rd') //hide password before pushing to gh
               })
             }).then(function (d) {
               var json = d.json();
@@ -133,8 +133,7 @@ export class DGM1 {
               directionssrc.clear();
               const lineFeature = new OlFeature(line);
               lineFeature.setId(summaryde + ' km');
-              console.log('DGM1 is base for elevation');
-              console.log(lineFeature);
+              lineFeature.set('dgm', 'dgm1');
               directionssrc.addFeature(lineFeature);
             }
           });

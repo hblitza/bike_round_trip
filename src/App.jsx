@@ -382,8 +382,7 @@ componentDidMount() {
       this.setMessage(4);
     } else if (n_features === 9 && event.feature.getId() === 1) {
       Openrouteservice.calcRoute(directionssrc, directionsLayer, waypointsSource, this.state.Profile);
-    } else if (n_features > 9 && event.feature.getId() === 1) {
-      Openrouteservice.calcRoute(directionssrc, directionsLayer, waypointsSource, this.state.Profile);
+      this.setMessage(4);
     }
   });
 
@@ -398,6 +397,11 @@ componentDidMount() {
     });
     const href = 'data:text/json;charset=utf-8,' + gpx;
     this.setState({gpx:href,DLisHidden:false,RouteLength:event.target.getFeatures()[0].getId()});
+    //check dgmSource
+    const dgmSource = event.target.getFeatures()[0].get('dgm');
+    if (dgmSource === 'dgm1') {
+      this.setMessage(9);
+    }
     profile.setGeometry(event.target.getFeatures()[0]);
     profile.show();
     profile.on('over', (e) => {

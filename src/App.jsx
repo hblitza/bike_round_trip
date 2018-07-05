@@ -327,7 +327,7 @@ componentDidMount() {
     this.circleSource.clear();
     this.directionsVectorSource.clear();
     NewPoint.addPoint(waypointsSource, waypointsLayer, evt.coordinate, this.state.ftcount);
-    /*
+    */
   });
 
   //rightclick

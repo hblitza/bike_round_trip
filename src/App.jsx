@@ -149,7 +149,6 @@ handleMethod (method) {
 }
 
 handleLanduse (landuse) {
-  console.log(this.state.coordinate);
   this.setState({LanduseisHidden:true})
   if (landuse === 'forest') {
     Landuse.forest(this.state.coordinate, this.landuseSource, this.WaypointsSource);
@@ -315,18 +314,14 @@ componentDidMount() {
   map.addLayer(userPositionLayer);
   map.addLayer(circlewaypointsLayer);
   map.addLayer(profilePointLayer);
-  //map.addLayer(landuseLayer);
 
   //on.click
   map.on('click', (evt) => {
-    //Landuse.waterways(evt.coordinate, this.landuseSource, this.WaypointsSource);
-
     this.setState({ coordinate:evt.coordinate, ftcount: this.state.ftcount + 1, contextmenuText: "Add waypoint", nominatimDisplay: "none" });
     this.circleSource.clear();
     this.directionsVectorSource.clear();
     NewPoint.addPoint(waypointsSource, waypointsLayer, evt.coordinate, this.state.ftcount);
-
-  })
+  });
 
   //rightclick
   map.getViewport().addEventListener('contextmenu', (evt) => {

@@ -1,8 +1,14 @@
 import OlFormatGeoJSON from 'ol/format/geojson';
 import * as turf from '@turf/turf';
 import OlProj from 'ol/proj';
+import forest from './../assets/forest_landuse_gen_gt_3m_4326.json';
+import waterways from './../assets/waterways_nrw_gen.json';
 
 export class Landuse {
+  static test(){
+    //const forest = require('!json-loader!./../assets/forest_landuse_gen_gt_3m_4326.json');
+    console.log(forest)
+  }
   static forest(startcoordinate, landuseSource, waypointsSource) {
     const startcoordinate4326 = OlProj.toLonLat(startcoordinate);
     const start = turf.point(startcoordinate4326);
@@ -10,7 +16,7 @@ export class Landuse {
     if (ptWithinNRW === false) {
       alert('This feature is only available in NRW')
     } else {
-    const forest = require('./../assets/forest_landuse_gen_gt_3m_4326.json');
+
     const geom = forest;
     const landuseFeature = new OlFormatGeoJSON().readFeatures(geom, {
       dataProjection: 'EPSG:4326',
@@ -78,7 +84,7 @@ static waterways(startcoordinate, landuseSource, waypointsSource) {
   if (ptWithinNRW === false) {
     alert('This feature is only available in NRW');
   } else {
-  const waterways = require('./../assets/waterways_nrw_gen.json');
+
   const geom = waterways;
   const landuseFeature = new OlFormatGeoJSON().readFeatures(geom, {
     dataProjection: 'EPSG:4326',

@@ -317,17 +317,10 @@ componentDidMount() {
 
   //on.click
   map.on('click', (evt) => {
-    fetch('https://hblitza.uber.space/data/login.json').then((response) => {
-      return response.json();
-    }).then((json) => {
-      console.log(json)
-    });
-    /*
     this.setState({ coordinate:evt.coordinate, ftcount: this.state.ftcount + 1, contextmenuText: "Add waypoint", nominatimDisplay: "none" });
     this.circleSource.clear();
     this.directionsVectorSource.clear();
     NewPoint.addPoint(waypointsSource, waypointsLayer, evt.coordinate, this.state.ftcount);
-    */
   });
 
   //rightclick
@@ -382,7 +375,10 @@ componentDidMount() {
     } else if (n_features === 8 && event.feature.getId() === 10) {
       Openrouteservice.calcRoute(directionssrc, directionsLayer, waypointsSource, this.state.Profile);
       this.setMessage(4);
-    } else if (n_features === 9 && event.feature.getId() === 1) {
+    } else if (n_features === 9 && event.feature.getId() === 10) {
+      Openrouteservice.calcRoute(directionssrc, directionsLayer, waypointsSource, this.state.Profile);
+      this.setMessage(4);
+    } else if (event.feature.getId() === 100) {
       Openrouteservice.calcRoute(directionssrc, directionsLayer, waypointsSource, this.state.Profile);
       this.setMessage(4);
     }

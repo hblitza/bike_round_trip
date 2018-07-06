@@ -92,16 +92,26 @@ static waterways(startcoordinate, landuseSource, waypointsSource) {
   const closestFeatureTurf = geom.features[closestFeatureIndex];
   const nearestPoint = turf.nearestPointOnLine(closestFeatureTurf.geometry, start, options);
   const bearing = turf.bearing(start.geometry,nearestPoint.geometry);
-  const alongPoints = [];
+  const azimuth = turf.bearingToAzimuth(bearing);
+  const alongCoords = [];
   closestFeatureTurf.geometry.coordinates.forEach((i, index) => {
-    if (index > (nearestPoint.properties.index - 3) && index < (nearestPoint.properties.index + 3) ) {
-    alongPoints.push(turf.point(i))
+    if (index > (nearestPoint.properties.index - 4) && index < (nearestPoint.properties.index + 4) ) {
+    alongCoords.push(i)
   };
   });
-  const alongPointsTranslated = Landuse.translatePoints(alongPoints, bearing);
+  const newLine = turf.lineString(alongCoords);
+  const length = turf.lineDistance(newLine, options);
+  const distance = 1;
+  const alongPoints = [];
+  for (let i = 1; i <= length / distance; i++) {
+    const turfPoint = turf.along(newLine, i * distance, options);
+    alongPoints.push(turfPoint);
+  }
+  debugger
+  const alongPointsTranslated = Landuse.translatePoints(alongPoints, azimuth);
   const rhomb = [];
   rhomb.push(start);
-  alongPoints.forEach((i) => {
+  alongPointsTranslated.forEach((i) => {
     rhomb.push(i)
   })
   rhomb.push(start);
@@ -112,15 +122,15 @@ static waterways(startcoordinate, landuseSource, waypointsSource) {
     rhombwaypoints.push(geojsonformat.readFeature(item, {dataProjection: 'EPSG:4326',featureProjection: 'EPSG:3857'}));
   });
   rhombwaypoints.forEach((item, i) => {
-    item.setId(i+10);
+    item.setId(i+100);
   });
   waypointsSource.addFeatures(rhombwaypoints);
   }
 }
-static translatePoints(points, bearing) {
+static translatePoints(points, azimuth) {
   const pointsTranslated = [];
   points.forEach((i) => {
-    pointsTranslated.push(turf.transformTranslate(i.geometry, 0.1, bearing*-1))
+    pointsTranslated.push(turf.transformTranslate(i.geometry, 0.5, azimuth-180))
   });
   return pointsTranslated
 }

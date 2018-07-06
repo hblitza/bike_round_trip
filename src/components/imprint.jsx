@@ -3,6 +3,7 @@ import './../assets/App.css';
 import {
   SimpleButton
 } from '@terrestris/react-geo';
+import Obfuscate from 'react-obfuscate';
 
 export class Imprint extends Component {
   render() {
@@ -47,7 +48,12 @@ export class Imprint extends Component {
     Privacy Policy of <a href="https://www.terrestris.de">terrestris:</a><a href="https://www.terrestris.de/en/datenschutzerklaerung/"> English</a>;
     <a href="https://www.terrestris.de/datenschutzerklaerung/"> German </a><br/><br/>
     <h3>Contact Person</h3>
-    blitza(ät)terrestris.de
+    <Obfuscate
+      email="info@terrestris.de"
+      headers={{
+        subject: '[Bike Roundtrip Planner] Question'
+      }}
+    />
         </div>
     )
   }

@@ -10,7 +10,7 @@ import 'ol-ext/control/Profil.css';
 
 const dgmNRWcached = new OlLayerImage({
   source: new OlSourceImageWMS({
-    url: 'http://10.133.7.105:8081/service',
+    url: 'http://localhost:8081/service',
     params: {'LAYERS': 'nw_dgm-schummerung_pan_ne', 'VERSION': '1.1.1'},
     ratio: 1,
     serverType: 'geoserver',
@@ -28,7 +28,7 @@ const osm = new OlLayerTile({
 
 const bikestyle = new OlLayerImage({
   source: new OlSourceImageWMS({
-    url: 'http://10.133.7.105:8081/service',
+    url: 'http://localhost:8081/service',
     params: {'LAYERS': 'osm_styling', 'VERSION': '1.1.1'},
     ratio: 1,
     serverType: 'geoserver',
@@ -72,7 +72,7 @@ export const map = new OlMap({
 });
 
 map.addLayer(basemap);
-hillshade.setVisible(true);
+hillshade.setVisible(false);
 map.addLayer(hillshade);
 const setBlendModeFromSelect = function(evt) {
   evt.context.globalCompositeOperation = 'hard-light';

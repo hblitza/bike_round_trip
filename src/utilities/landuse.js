@@ -1,8 +1,6 @@
 import OlFormatGeoJSON from 'ol/format/geojson';
 import * as turf from '@turf/turf';
 import OlProj from 'ol/proj';
-import forest from './../assets/forest_landuse_gen_gt_3m_4326.json';
-import waterways from './../assets/waterways_nrw_gen.json';
 
 export class Landuse {
   static forest(startcoordinate, landuseSource, waypointsSource) {
@@ -12,17 +10,20 @@ export class Landuse {
     if (ptWithinNRW === false) {
       alert('This feature is only available in NRW')
     } else {
+      fetch('https://hblitza.uber.space/geodata/forest_landuse_gen_gt_3m_4326.json').then( (response) => {
+      console.log('WAITING')
+      return response.json();
+    }).then( (json) => {
+      const landuseFeatures = new OlFormatGeoJSON().readFeatures(json, {
+        dataProjection: 'EPSG:4326',
+        featureProjection: 'EPSG:3857'
+      });
 
-    const geom = forest;
-    const landuseFeature = new OlFormatGeoJSON().readFeatures(geom, {
-      dataProjection: 'EPSG:4326',
-      featureProjection: 'EPSG:3857'
-    });
-    landuseSource.addFeatures(landuseFeature);
-
+    landuseSource.addFeatures(landuseFeatures);
     const closestFeature = landuseSource.getClosestFeatureToCoordinate(startcoordinate); //id 222
-    const closestFeatureIndex = closestFeature.getProperties().id - 1;
-    const closestFeatureTurf = geom.features[closestFeatureIndex];
+    console.log(startcoordinate);
+    const closestFeatureIndex = (closestFeature.getProperties().id - 1);
+    const closestFeatureTurf = json.features[closestFeatureIndex];
     const center = turf.center(closestFeatureTurf);
     const features = turf.featureCollection([
           start,
@@ -44,7 +45,9 @@ export class Landuse {
     rhombwaypoints.forEach((item, i) => {
       item.setId(i+10);
     });
+    console.log(rhombwaypoints);
     waypointsSource.addFeatures(rhombwaypoints);
+  })
   }
 }
 static pointsAlongLine(linestring, start, options) {
@@ -80,51 +83,53 @@ static waterways(startcoordinate, landuseSource, waypointsSource) {
   if (ptWithinNRW === false) {
     alert('This feature is only available in NRW');
   } else {
+  fetch('https://hblitza.uber.space/geodata/waterways_nrw_gen.json').then( (response) => {
+    console.log('WAITING')
+    return response.json();
+  }).then( (json) => {
+        const landuseFeatures = new OlFormatGeoJSON().readFeatures(json, {
+          dataProjection: 'EPSG:4326',
+          featureProjection: 'EPSG:3857'
+        });
+      landuseSource.addFeatures(landuseFeatures);
+      const closestFeature = landuseSource.getClosestFeatureToCoordinate(startcoordinate);
+      const closestFeatureIndex = closestFeature.getProperties().id - 1;
+      const closestFeatureTurf = json.features[closestFeatureIndex];
+      const nearestPoint = turf.nearestPointOnLine(closestFeatureTurf.geometry, start, options);
+      const bearing = turf.bearing(start.geometry,nearestPoint.geometry);
+      const azimuth = turf.bearingToAzimuth(bearing);
+      const alongCoords = [];
+      closestFeatureTurf.geometry.coordinates.forEach((i, index) => {
+        if (index > (nearestPoint.properties.index - 4) && index < (nearestPoint.properties.index + 4) ) {
+        alongCoords.push(i)
+      };
+      });
+      const newLine = turf.lineString(alongCoords);
+      const length = turf.lineDistance(newLine, options);
+      const distance = 1;
+      const alongPoints = [];
+      for (let i = 1; i <= length / distance; i++) {
+        const turfPoint = turf.along(newLine, i * distance, options);
+        alongPoints.push(turfPoint);
+      }
+      const alongPointsTranslated = Landuse.translatePoints(alongPoints, azimuth);
+      const rhomb = [];
+      rhomb.push(start);
+      alongPointsTranslated.forEach((i) => {
+        rhomb.push(i)
+      })
+      rhomb.push(start);
 
-  const geom = waterways;
-  const landuseFeature = new OlFormatGeoJSON().readFeatures(geom, {
-    dataProjection: 'EPSG:4326',
-    featureProjection: 'EPSG:3857'
-  });
-  landuseSource.addFeatures(landuseFeature);
-  const closestFeature = landuseSource.getClosestFeatureToCoordinate(startcoordinate);
-  const closestFeatureIndex = closestFeature.getProperties().id - 1;
-  const closestFeatureTurf = geom.features[closestFeatureIndex];
-  const nearestPoint = turf.nearestPointOnLine(closestFeatureTurf.geometry, start, options);
-  const bearing = turf.bearing(start.geometry,nearestPoint.geometry);
-  const azimuth = turf.bearingToAzimuth(bearing);
-  const alongCoords = [];
-  closestFeatureTurf.geometry.coordinates.forEach((i, index) => {
-    if (index > (nearestPoint.properties.index - 4) && index < (nearestPoint.properties.index + 4) ) {
-    alongCoords.push(i)
-  };
-  });
-  const newLine = turf.lineString(alongCoords);
-  const length = turf.lineDistance(newLine, options);
-  const distance = 1;
-  const alongPoints = [];
-  for (let i = 1; i <= length / distance; i++) {
-    const turfPoint = turf.along(newLine, i * distance, options);
-    alongPoints.push(turfPoint);
-  }
-  debugger
-  const alongPointsTranslated = Landuse.translatePoints(alongPoints, azimuth);
-  const rhomb = [];
-  rhomb.push(start);
-  alongPointsTranslated.forEach((i) => {
-    rhomb.push(i)
-  })
-  rhomb.push(start);
-
-  const geojsonformat = new OlFormatGeoJSON();
-  const rhombwaypoints = [];
-  rhomb.forEach((item) => {
-    rhombwaypoints.push(geojsonformat.readFeature(item, {dataProjection: 'EPSG:4326',featureProjection: 'EPSG:3857'}));
-  });
-  rhombwaypoints.forEach((item, i) => {
-    item.setId(i+100);
-  });
-  waypointsSource.addFeatures(rhombwaypoints);
+      const geojsonformat = new OlFormatGeoJSON();
+      const rhombwaypoints = [];
+      rhomb.forEach((item) => {
+        rhombwaypoints.push(geojsonformat.readFeature(item, {dataProjection: 'EPSG:4326',featureProjection: 'EPSG:3857'}));
+      });
+      rhombwaypoints.forEach((item, i) => {
+        item.setId(i+100);
+      });
+      waypointsSource.addFeatures(rhombwaypoints);
+    })
   }
 }
 static translatePoints(points, azimuth) {

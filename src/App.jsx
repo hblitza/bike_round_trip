@@ -149,12 +149,12 @@ handleMethod (method) {
 }
 
 handleLanduse (landuse) {
-  this.setState({LanduseisHidden:true})
   if (landuse === 'forest') {
     Landuse.forest(this.state.coordinate, this.landuseSource, this.WaypointsSource);
   } else if (landuse === 'river') {
     Landuse.waterways(this.state.coordinate, this.landuseSource, this.WaypointsSource);
   }
+  this.setState({LanduseisHidden:true})
 };
 
 handleDistance (distance) {
@@ -196,7 +196,7 @@ geolocate() {
     projection: map.getView().getProjection(),
     tracking: true
   });
-  geolocation.on('change', (e) => {
+  geolocation.once('change:position', (e) => {
     // TODO accuracy problem
     const userPosition = e.target.getPosition();
     this.setState({ftcount: this.state.ftcount + 1});
@@ -236,8 +236,6 @@ contextmenuAddpoint () {
   this.setState({contextmenuDisplay: "none", contextmenuText: "Add waypoint"});
   NewPoint.addPoint(this.WaypointsSource, this.WaypointsLayer, this.state.contextmenuCoord, this.state.ftcount);
 }
-
-//WIP missing layer filter function
 contextmenuDeletepoint () {
   const pixel = [this.state.contextmenuX, this.state.contextmenuY];
   const features = [];
@@ -379,6 +377,9 @@ componentDidMount() {
       Openrouteservice.calcRoute(directionssrc, directionsLayer, waypointsSource, this.state.Profile);
       this.setMessage(4);
     } else if (event.feature.getId() === 100) {
+      Openrouteservice.calcRoute(directionssrc, directionsLayer, waypointsSource, this.state.Profile);
+      this.setMessage(4);
+    } else if (n_features === 9 && event.feature.getId() === 1) {
       Openrouteservice.calcRoute(directionssrc, directionsLayer, waypointsSource, this.state.Profile);
       this.setMessage(4);
     }

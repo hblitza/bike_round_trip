@@ -38,7 +38,6 @@ export class Openrouteservice {
         });
         directions[0].setId(summaryde + ' km');
         const checkDGM = GISTools.pointsWithinPolygon(directions[0]);
-        console.log(checkDGM);
         if (checkDGM === true) {
           DGM1.getdgm(directions[0], directionssrc, summaryde)
         } else if (checkDGM === false) {

@@ -57,7 +57,7 @@ class App extends Component {
        DistanceisHidden: true,
        ImprintisHidden: true,
        RouteLength: "",
-       Profile: 'cycling-tour',
+       Profile: 'cycling-regular',
        hillshadeIcon: "eye-slash",
        ftcount: 0,
        turfCount: 0,
@@ -197,7 +197,6 @@ geolocate() {
     tracking: true
   });
   geolocation.once('change:position', (e) => {
-    // TODO accuracy problem
     const userPosition = e.target.getPosition();
     this.setState({ftcount: this.state.ftcount + 1});
     NewPoint.addPoint(this.WaypointsSource, this.WaypointsLayer, userPosition, this.state.ftcount);

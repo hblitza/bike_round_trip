@@ -31,5 +31,5 @@ export const dialogue = [
   "Choose your preferred distance.",
   "Choose a routing method.",
   "Forest oder river?",
-  "That's your route. You can keep on adding waypoints or download the route. \n Heigt accuracy: +/- 20cm (DGM1 NRW)"
+  "That's your route. You can keep on adding waypoints or download the route. \n Height accuracy: +/- 20cm (DGM1 NRW)"
 ];

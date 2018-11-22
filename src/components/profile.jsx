@@ -43,7 +43,7 @@ export class Profile extends Component {
       className="profileButton"
       tooltip="biketour"
       tooltipPlacement="top"
-      onClick={() => this.selectProfile('cycling-tour')}
+      onClick={() => this.selectProfile('cycling-regular')}
     >
     <img
     src={biketour}
